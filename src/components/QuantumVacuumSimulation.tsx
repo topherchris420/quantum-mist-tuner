@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -66,6 +65,8 @@ export const QuantumVacuumSimulation = () => {
       // Calculate chirality based on field direction and mirror angle
       const chirality = Math.sin((state.fieldDirection + mirrorAngle) * Math.PI / 180) * magneticField;
       
+      const previousTopologicalPhase = state.topologicalPhase;
+      
       setState(prev => ({
         ...prev,
         energy: Math.round(energy),
@@ -75,7 +76,7 @@ export const QuantumVacuumSimulation = () => {
       }));
 
       // Update score and unlock materials
-      if (topologicalPhase && !prev.topologicalPhase) {
+      if (topologicalPhase && !previousTopologicalPhase) {
         setScore(prev => prev + 100);
         toast("🎉 Topological phase achieved! Material properties enhanced!");
         
@@ -87,7 +88,7 @@ export const QuantumVacuumSimulation = () => {
     };
 
     calculateProperties();
-  }, [state.mirrorAngle, state.mirrorSpacing, state.magneticField, state.fieldDirection, state.insertedMaterial]);
+  }, [state.mirrorAngle, state.mirrorSpacing, state.magneticField, state.fieldDirection, state.insertedMaterial, state.topologicalPhase, unlockedMaterials]);
 
   // Animation loop for quantum field effects
   useEffect(() => {
