@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -133,73 +134,61 @@ export const QuantumVacuumSimulation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Quantum Vacuum Manipulator
-          </h1>
-          <p className="text-gray-300 text-lg">
-            Explore chiral optical cavities and quantum field engineering
-          </p>
-          <div className="flex justify-center items-center gap-4">
-            <Badge variant="secondary" className="bg-purple-800/50 text-purple-200">
-              Score: {score}
-            </Badge>
-            <Badge variant="secondary" className="bg-blue-800/50 text-blue-200">
-              Energy: {state.energy} μeV
-            </Badge>
-            <Badge variant="secondary" className="bg-green-800/50 text-green-200">
-              Coherence: {state.coherence}%
-            </Badge>
-          </div>
+    <div className="space-y-6">
+      {/* Status Bar */}
+      <div className="flex flex-wrap items-center gap-4">
+        <Badge variant="secondary" className="bg-purple-800/50 text-purple-200">
+          Score: {score}
+        </Badge>
+        <Badge variant="secondary" className="bg-blue-800/50 text-blue-200">
+          Energy: {state.energy} μeV
+        </Badge>
+        <Badge variant="secondary" className="bg-green-800/50 text-green-200">
+          Coherence: {state.coherence}%
+        </Badge>
+        <div className="flex gap-2 ml-auto">
+          <Button
+            onClick={() => setIsRunning(!isRunning)}
+            className={`${isRunning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'}`}
+          >
+            {isRunning ? 'Stop' : 'Start'} Simulation
+          </Button>
+          <Button onClick={resetSimulation} variant="outline">
+            Reset
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Quantum Field Visualization */}
+        <div className="lg:col-span-2">
+          <Card className="p-6 bg-black/30 border-purple-500/30 backdrop-blur-sm">
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-white">Quantum Field Visualization</h2>
+              
+              <QuantumField 
+                state={state}
+                isRunning={isRunning}
+                className="w-full h-96 rounded-lg border border-purple-500/30"
+              />
+              
+              <PhaseIndicator state={state} />
+            </div>
+          </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Quantum Field Visualization */}
-          <div className="lg:col-span-2">
-            <Card className="p-6 bg-black/30 border-purple-500/30 backdrop-blur-sm">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-white">Quantum Field Visualization</h2>
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => setIsRunning(!isRunning)}
-                      className={`${isRunning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'}`}
-                    >
-                      {isRunning ? 'Stop' : 'Start'} Simulation
-                    </Button>
-                    <Button onClick={resetSimulation} variant="outline">
-                      Reset
-                    </Button>
-                  </div>
-                </div>
-                
-                <QuantumField 
-                  state={state}
-                  isRunning={isRunning}
-                  className="w-full h-96 rounded-lg border border-purple-500/30"
-                />
-                
-                <PhaseIndicator state={state} />
-              </div>
-            </Card>
-          </div>
-
-          {/* Control Panel */}
-          <div className="space-y-6">
-            <ControlPanel 
-              state={state}
-              onParameterChange={handleParameterChange}
-            />
-            
-            <MaterialSelector
-              selectedMaterial={state.insertedMaterial}
-              unlockedMaterials={unlockedMaterials}
-              onMaterialChange={(material) => handleParameterChange('insertedMaterial', material)}
-            />
-          </div>
+        {/* Control Panel */}
+        <div className="space-y-6">
+          <ControlPanel 
+            state={state}
+            onParameterChange={handleParameterChange}
+          />
+          
+          <MaterialSelector
+            selectedMaterial={state.insertedMaterial}
+            unlockedMaterials={unlockedMaterials}
+            onMaterialChange={(material) => handleParameterChange('insertedMaterial', material)}
+          />
         </div>
       </div>
     </div>

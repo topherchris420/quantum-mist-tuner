@@ -1,8 +1,13 @@
 
 import { QuantumVacuumSimulation } from "@/components/QuantumVacuumSimulation";
+import { Layout } from "@/components/Layout";
 
 const Index = () => {
-  return <QuantumVacuumSimulation />;
+  return (
+    <Layout>
+      <QuantumVacuumSimulation />
+    </Layout>
+  );
 };
 
 export default Index;
