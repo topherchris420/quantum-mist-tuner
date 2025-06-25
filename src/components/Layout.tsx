@@ -14,9 +14,10 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full relative overflow-hidden">
         {/* Background image with overlay */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: 'url(/lovable-uploads/ecb935b6-e63d-4d0f-a3f3-be156475a385.png)'
+            backgroundImage: 'url(/lovable-uploads/ecb935b6-e63d-4d0f-a3f3-be156475a385.png)',
+            backgroundAttachment: 'fixed'
           }}
         >
           {/* Dark overlay for better readability */}
