@@ -34,17 +34,17 @@ const menuItems = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-r border-gray-200/20">
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3">
+    <Sidebar className="border-r border-gray-200/20 backdrop-blur-sm bg-black/20">
+      <SidebarHeader className="p-6">
+        <div className="flex items-center gap-4">
           <img 
             src="/lovable-uploads/40fda106-dc94-460e-bbc6-fd9ffec81eaa.png" 
             alt="Quantum Fun Logo" 
-            className="w-10 h-10 rounded-lg object-cover"
+            className="w-16 h-16 rounded-xl object-cover shadow-lg"
           />
           <div>
-            <h2 className="text-lg font-semibold text-white">Quantum Fun</h2>
-            <p className="text-sm text-gray-400">Vacuum Manipulator</p>
+            <h2 className="text-xl font-bold text-white">Quantum Fun</h2>
+            <p className="text-sm text-gray-300">Vacuum Manipulator</p>
           </div>
         </div>
       </SidebarHeader>
@@ -57,9 +57,9 @@ export function AppSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg p-2">
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.title}</span>
+                    <a href={item.url} className="flex items-center gap-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg p-3 transition-all duration-200">
+                      <item.icon className="w-5 h-5" />
+                      <span className="font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
