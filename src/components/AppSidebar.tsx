@@ -38,9 +38,9 @@ export function AppSidebar() {
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-4">
           <img 
-            src="/lovable-uploads/40fda106-dc94-460e-bbc6-fd9ffec81eaa.png" 
-            alt="Quantum Fun Logo" 
-            className="w-16 h-16 rounded-xl object-cover shadow-lg"
+            src="/lovable-uploads/97179b08-c70c-4c23-9d01-36b1c031377c.png" 
+            alt="ARPANET Network Logo" 
+            className="w-16 h-16 rounded-xl object-cover shadow-lg bg-white p-2"
           />
           <div>
             <h2 className="text-xl font-bold text-white">Quantum Fun</h2>
