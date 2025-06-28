@@ -1,15 +1,18 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { QuantumField } from './QuantumField';
-import { ControlPanel } from './ControlPanel';
+import { EnhancedControlPanel } from './EnhancedControlPanel';
 import { MaterialSelector } from './MaterialSelector';
 import { PhaseIndicator } from './PhaseIndicator';
+import { PresetManager } from './PresetManager';
+import { AchievementSystem } from './AchievementSystem';
+import { DataExport } from './DataExport';
+import { TutorialSystem } from './TutorialSystem';
 import { toast } from 'sonner';
+import { HelpCircle, Play, Square, RotateCcw } from 'lucide-react';
 
 export interface SimulationState {
   mirrorAngle: number;
@@ -39,6 +42,14 @@ export const QuantumVacuumSimulation = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [score, setScore] = useState(0);
   const [unlockedMaterials, setUnlockedMaterials] = useState(['graphene']);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [sessionData] = useState({
+    startTime: new Date(),
+    experimentsRun: 0,
+    maxEnergy: 0,
+    maxCoherence: 0
+  });
+  
   const animationRef = useRef<number>();
 
   // Calculate derived properties based on current state
@@ -115,6 +126,19 @@ export const QuantumVacuumSimulation = () => {
       ...prev,
       [parameter]: value,
     }));
+    
+    // Add sound feedback for parameter changes
+    if (typeof value === 'number' && Math.abs(value - (state[parameter] as number)) > 0.1) {
+      // Simple audio feedback could be added here
+    }
+  };
+
+  const handlePresetLoad = (presetState: Partial<SimulationState>) => {
+    setState(prev => ({
+      ...prev,
+      ...presetState,
+    }));
+    toast.success('Preset configuration loaded!');
   };
 
   const resetSimulation = () => {
@@ -135,33 +159,61 @@ export const QuantumVacuumSimulation = () => {
 
   return (
     <div className="space-y-6">
-      {/* Status Bar */}
+      {/* Enhanced Status Bar */}
       <div className="flex flex-wrap items-center gap-4">
         <Badge variant="secondary" className="bg-purple-800/50 text-purple-200">
           Score: {score}
         </Badge>
-        <Badge variant="secondary" className="bg-blue-800/50 text-blue-200">
+        <Badge variant="secondary" className="bg-blue-800/50 text-blue-200" data-tutorial="energy">
           Energy: {state.energy} μeV
         </Badge>
-        <Badge variant="secondary" className="bg-green-800/50 text-green-200">
+        <Badge variant="secondary" className="bg-green-800/50 text-green-200" data-tutorial="coherence">
           Coherence: {state.coherence}%
         </Badge>
+        {state.topologicalPhase && (
+          <Badge className="bg-gold-800/50 text-gold-200 animate-pulse" data-tutorial="topological-phase">
+            🎯 Topological Phase Active
+          </Badge>
+        )}
+        
         <div className="flex gap-2 ml-auto">
+          <Button
+            onClick={() => setShowTutorial(true)}
+            variant="outline"
+            size="sm"
+          >
+            <HelpCircle className="w-4 h-4 mr-1" />
+            Tutorial
+          </Button>
+          
           <Button
             onClick={() => setIsRunning(!isRunning)}
             className={`${isRunning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'}`}
+            data-tutorial="start-button"
           >
-            {isRunning ? 'Stop' : 'Start'} Simulation
+            {isRunning ? (
+              <>
+                <Square className="w-4 h-4 mr-1" />
+                Stop
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4 mr-1" />
+                Start
+              </>
+            )}
           </Button>
+          
           <Button onClick={resetSimulation} variant="outline">
+            <RotateCcw className="w-4 h-4 mr-1" />
             Reset
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         {/* Main Quantum Field Visualization */}
-        <div className="lg:col-span-2">
+        <div className="xl:col-span-2">
           <Card className="p-6 bg-black/30 border-purple-500/30 backdrop-blur-sm">
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-white">Quantum Field Visualization</h2>
@@ -179,18 +231,46 @@ export const QuantumVacuumSimulation = () => {
 
         {/* Control Panel */}
         <div className="space-y-6">
-          <ControlPanel 
+          <EnhancedControlPanel 
             state={state}
             onParameterChange={handleParameterChange}
           />
           
-          <MaterialSelector
-            selectedMaterial={state.insertedMaterial}
+          <div data-tutorial="material-selector">
+            <MaterialSelector
+              selectedMaterial={state.insertedMaterial}
+              unlockedMaterials={unlockedMaterials}
+              onMaterialChange={(material) => handleParameterChange('insertedMaterial', material)}
+            />
+          </div>
+        </div>
+
+        {/* Advanced Features Panel */}
+        <div className="space-y-6">
+          <PresetManager
+            onLoadPreset={handlePresetLoad}
             unlockedMaterials={unlockedMaterials}
-            onMaterialChange={(material) => handleParameterChange('insertedMaterial', material)}
+          />
+          
+          <AchievementSystem
+            state={state}
+            score={score}
+          />
+          
+          <DataExport
+            state={state}
+            score={score}
+            sessionData={sessionData}
           />
         </div>
       </div>
+
+      {/* Tutorial System */}
+      <TutorialSystem
+        onStateChange={(newState) => setState(prev => ({ ...prev, ...newState }))}
+        isVisible={showTutorial}
+        onClose={() => setShowTutorial(false)}
+      />
     </div>
   );
 };
