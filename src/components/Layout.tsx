@@ -38,7 +38,7 @@ export function Layout({ children }: LayoutProps) {
                 </div>
                 <h1 className="text-xl font-semibold text-white font-inter relative">
                   <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse">
-                    Quantum Vacuum Manipulator
+                    Quantum Fun
                   </span>
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-sm animate-pulse"></div>
                 </h1>
