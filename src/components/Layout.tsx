@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
         <div 
           className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0"
           style={{
-            backgroundImage: 'url(/lovable-uploads/ecb935b6-e63d-4d0f-a3f3-be156475a385.png)',
+            backgroundImage: 'url(/lovable-uploads/a5ce6b14-e580-4dbb-b6f2-b6740650e488.png)',
             backgroundAttachment: 'fixed'
           }}
         >
